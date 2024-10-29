@@ -119,7 +119,7 @@ class Filesystem implements StorageInterface
     }
 
     $destinationFile = $path . '/' . $file->getFilename();
-    if (!$overwrite and is_file($destinationFile)) {
+    if (!$overwrite && is_file($destinationFile)) {
       $i = 1;
       do {
         $destinationFile = $path . '/' . $file->getName() . '-' . $i . '.' . $file->getExtension();
@@ -129,7 +129,7 @@ class Filesystem implements StorageInterface
       } while ($fileExist);
     }
 
-    if ($file->isUploadedFile() and !$file->validUploadedFile()) {
+    if ($file->isUploadedFile() && !$file->validUploadedFile()) {
       throw new BerkasException(sprintf("%s is not a valid uploaded file.", $file->getPathname()));
     }
 

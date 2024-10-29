@@ -254,18 +254,11 @@ class FileInfo extends SplFileInfo
 
   private static function curlRequest($url) : string|false
   {
-    $urls = parse_url($url);
-    $cookieFile = tempnam(sys_get_temp_dir(), 'cookie_' . substr(md5($urls['host']), 0, 7));
-    if (!file_exists($cookieFile))
-      touch($cookieFile);
-
     $opts = array(
       CURLOPT_CONNECTTIMEOUT => 10,
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_TIMEOUT        => 60,
       CURLOPT_USERAGENT      => $_SERVER['HTTP_USER_AGENT'] ?? 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36',
-      CURLOPT_COOKIEJAR      => $cookieFile,
-      CURLOPT_COOKIEFILE     => $cookieFile,
       CURLOPT_SSL_VERIFYHOST => false,
       CURLOPT_SSL_VERIFYPEER => false,
       CURLOPT_FOLLOWLOCATION => false,

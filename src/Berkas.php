@@ -88,6 +88,11 @@ class Berkas
     return $this;
   }
 
+  public function getFileInfo(): array|FileInfo
+  {
+    return $this->files;
+  }
+
   /*
     * return boolean
     */
