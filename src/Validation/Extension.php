@@ -8,13 +8,14 @@ use Perigi\Berkas\FileInfo;
 
 class Extension extends Base
 {
-  protected $allowedExtensions;
+  protected ?array $allowedExtensions = null;
 
-  public function __construct($allowedExtensions)
+  public function __construct()
   {
-    if (is_string($allowedExtensions))
-      $allowedExtensions = [$allowedExtensions];
-
+    $allowedExtensions = func_get_args();
+    if (count($allowedExtensions) == 1){
+      $allowedExtensions = $allowedExtensions[0];
+    }
     $this->allowedExtensions = array_map('strtolower', $allowedExtensions);
   }
 
@@ -22,7 +23,7 @@ class Extension extends Base
   {
     $extension = strtolower($file->getExtension());
 
-    if (!in_array($extension, $this->allowedExtensions)) {
+    if ($this->allowedExtensions && !in_array($extension, $this->allowedExtensions)) {
       $this->error = sprintf('Invalid file extension. Must be one of: %s', implode(', ', $this->allowedExtensions));
       return false;
     }
