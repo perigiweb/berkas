@@ -13,11 +13,7 @@ class Mimetype extends Base
 
   public function __construct()
   {
-    $mimetypes = func_get_args();
-    if (count($mimetypes) == 1){
-      $mimetypes = $mimetypes[0];
-    }
-    $this->mimetypes = $mimetypes;
+    $this->mimetypes = func_get_args();
   }
 
   public function validate(FileInfo $file) : bool

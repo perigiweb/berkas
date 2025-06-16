@@ -116,21 +116,8 @@ class UploadFileTest extends TestCase
     ];
 
     $this->expectException(BerkasException::class);
-    $uploadResult = $berkas->fromFileUpload('file')->upload($validations, 'files');
-    /*
-    $this->assertTrue($uploadResult);
+    $uploadResult = $berkas->fromFileUpload('files')->upload($validations, 'files');
 
-    $uploadedFiles = $berkas->getUploadedFiles();
-    $listFiles = $berkas->getFiles('files');
-
-    //$this->assertSame($listFiles, $uploadedFiles);
-
-    echo "UploadedFiles:\n";
-    print_r($uploadedFiles);
-
-    echo "\nListFiles:\n";
-    print_r($listFiles);
-    */
     unlink($tmp_file);
   }
 
@@ -143,7 +130,7 @@ class UploadFileTest extends TestCase
       'mimetype' => ['image/png', 'image/jpeg', 'image/pjpeg']
     ];
 
-    $uploadResult = $berkas->fromUrl('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/%22Hello_World%22_Application_in_PHP.png/320px-%22Hello_World%22_Application_in_PHP.png')
+    $uploadResult = $berkas->fromUrl('https://www.php.net/favicon-196x196.png?v=2')
       ->upload($validations, 'images', true);
     $this->assertTrue($uploadResult);
 

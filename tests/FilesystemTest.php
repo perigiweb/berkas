@@ -20,6 +20,9 @@ class FilesystemTest extends TestCase
 
     if (!is_dir($this->path . '/files'))
       mkdir($this->path . '/files', 0777, true);
+
+    if (!is_dir($this->path . '/empty-dirs'))
+      mkdir($this->path . '/empty-dirs', 0777, true);
   }
 
   public function testGetFiles()
@@ -27,13 +30,13 @@ class FilesystemTest extends TestCase
     $berkas = new Berkas('filesystem', $this->path);
     $files = $berkas->getFiles();
 
-    $this->assertCount(3, $files);
+    $this->assertCount(4, $files);
   }
 
   public function testGetFilesOnEmptyFolder(){
     $berkas = new Berkas('filesystem', $this->path);
 
-    $files = $berkas->getFiles('images');
+    $files = $berkas->getFiles('empty-dirs');
     $this->assertCount(0, $files);
   }
 
@@ -48,7 +51,7 @@ class FilesystemTest extends TestCase
     $berkas = new Berkas('filesystem', $this->path);
     $berkas->getStorage()->setIncludeHiddenFile(true);
     $files = $berkas->getFiles();
-    $this->assertCount(4, $files);
+    $this->assertCount(5, $files);
   }
 
   public function testEmptyBasePath()

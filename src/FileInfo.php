@@ -12,6 +12,7 @@ class FileInfo extends SplFileInfo
   private $mtime;
   private $name;
   private $extension;
+  private $mimetype;
   private $error;
   private $isUploadedFile;
 
@@ -29,7 +30,11 @@ class FileInfo extends SplFileInfo
     $this->setName($name);
 
     $extension = pathinfo($name, PATHINFO_EXTENSION);
-    $this->setExtension($extension);
+    if ($finfo = $this->getTmpFileInfo($file, $extension)){
+      $extension = $finfo['extension'];
+      $this->mimetype = $finfo['mimetype'];
+    }
+    $this->setExtension((string) $extension);
 
     if ( !$size){
       $size = filesize($file);
@@ -108,9 +113,14 @@ class FileInfo extends SplFileInfo
 
   public function getMimeType()
   {
+    if ($this->mimetype){
+      return $this->mimetype;
+    }
+
     $finfo = finfo_open(defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME);
-    if (!$finfo)
-      return FALSE;
+    if (!$finfo){
+      return false;
+    }
 
     $mime = finfo_file($finfo, $this->getPathname());
     finfo_close($finfo);
@@ -138,6 +148,32 @@ class FileInfo extends SplFileInfo
   public function getError(): int
   {
     return $this->error;
+  }
+
+  protected function getTmpFileInfo(string $file, $fileExtension)
+  {
+    if ( !file_exists($file)){
+      return null;
+    }
+
+    $finfo = finfo_open();
+    if ($finfo === false){
+      return null;
+    }
+
+    $mimetype = finfo_file($finfo, $file, FILEINFO_MIME_TYPE);
+    $extension = finfo_file($finfo, $file, FILEINFO_EXTENSION);
+    if ($extension){
+      $extensions = explode('/', $extension);
+      $extension = in_array($fileExtension, $extensions) ? $fileExtension:array_shift($extensions);
+    }
+    $info = [
+      'mimetype' => $mimetype,
+      'extension' => $extension
+    ];
+    finfo_close($finfo);
+
+    return $info;
   }
 
   public static function sizeToReadable($bytes)

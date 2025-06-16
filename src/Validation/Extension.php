@@ -13,9 +13,6 @@ class Extension extends Base
   public function __construct()
   {
     $allowedExtensions = func_get_args();
-    if (count($allowedExtensions) == 1){
-      $allowedExtensions = $allowedExtensions[0];
-    }
     $this->allowedExtensions = array_map('strtolower', $allowedExtensions);
   }
 
