@@ -140,8 +140,10 @@ class Filesystem implements StorageInterface
       $result = $this->rename($file, $destinationFile);
     }
 
-    if ($result)
+    if ($result){
+      chmod($destinationFile, 0644);
       $file->setFile($destinationFile);
+    }
 
     return $result;
   }
